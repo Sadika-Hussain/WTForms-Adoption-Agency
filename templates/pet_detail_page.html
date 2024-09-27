@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %} About {{pet.name.title()}} {% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center my-4"> <!-- Flex container for alignment -->
+  <h1>{{ pet.name.title() }}</h1>
+  <a href="/" class="btn btn-secondary btn-lg">View All Pets</a>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-info mt-4 pb-0">
+  {% for message in messages %}
+  <p>{{ message }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+
+<!-- Image and Pet Info Side by Side -->
+<div class="row">
+  <!-- Image Column -->
+  <div class="col-md-3">
+    <img src="{{ pet.photo_url }}" alt="No image available for this pet" class="img-fluid mb-4"
+      style="max-width: 100%; max-height: 400px; object-fit: cover;">
+  </div>
+
+  <!-- Pet Info Column -->
+  <div class="col-md-9">
+    <p><strong>Species:</strong> {{ pet.species.title() }}</p>
+    {% if pet.age %}
+    <p><strong>Age:</strong> {{ pet.age }} year/s old</p>
+    {% endif %}
+    {% if pet.notes %}
+    <p><strong>Notes:</strong> {{ pet.notes }}</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Edit Form -->
+<h2 class="my-4">Edit Pet Info:</h2>
+<form action="/{{ pet.id }}" method="POST" class="mb-4">
+  {{ form.hidden_tag() }}
+
+  <!-- Hidden name and species fields to maintain data for validation  -->
+  {{ form.name(type="hidden", value=pet.name) }}
+  <input type="hidden" name="species" value="{{ pet.species }}">
+
+  <div class="mb-3">
+    <label for="{{ form.photo_url.id }}" class="form-label">{{ form.photo_url.label }}</label>
+    {{ form.photo_url(class_="form-control") }}
+  </div>
+
+  <div class="mb-3">
+    <label for="{{ form.notes.id }}" class="form-label">{{ form.notes.label }}</label>
+    {{ form.notes(class_="form-control") }}
+  </div>
+
+  <div class="mb-3 form-check">
+    <label for="{{ form.available.id }}" class="form-check-label">{{ form.available.label }}</label>
+    {{ form.available(class_="form-check-input") }}
+  </div>
+
+  <input type="submit" value="Save" class="btn btn-primary btn-lg">
+</form>
+
+{% endblock %}

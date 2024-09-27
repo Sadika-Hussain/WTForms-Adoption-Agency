@@ -1,0 +1,17 @@
+body {
+    background-color: rgb(222, 227, 252);
+}
+
+.card-img-top {
+    height: 200px;
+    /* Set a fixed height */
+    object-fit: cover;
+    /* Cover the area while maintaining aspect ratio */
+}
+
+
+
+
+
+
+
